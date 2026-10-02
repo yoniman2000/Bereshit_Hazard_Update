@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>הנהגת ההורים - דיווח מפגעים בית ספר בראשית</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Font - Assistant -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Assistant', sans-serif; }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-slate-100 min-h-screen text-slate-800 antialiased">
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-40">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <div class="bg-blue-600 text-white w-10 h-10 rounded-xl flex items-center justify-center text-xl font-bold shadow-sm">
+          🏫
+        </div>
+        <div>
+          <h1 class="text-base font-bold text-slate-900 leading-tight">בית ספר בראשית • באר יעקב</h1>
+          <p class="text-xs text-blue-700 font-semibold">מוקד דיווח מפגעים - הנהגת ההורים</p>
+        </div>
+      </div>
+
+      <button onclick="openPhoneModal()" class="text-xs text-slate-500 hover:text-blue-600 border border-slate-200 px-2.5 py-1 rounded-lg bg-slate-50 transition" title="שינוי יעד הווטסאפ">
+        ⚙️ יעד וואטסאפ
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-xl mx-auto px-4 py-5 pb-12">
+
+    <!-- Explanatory Banner -->
+    <div class="bg-blue-50 border border-blue-200 p-4 rounded-2xl mb-5 text-sm text-blue-900">
+      <p class="font-bold mb-1">הורים יקרים שלום,</p>
+      <p class="text-xs sm:text-sm text-blue-800 leading-relaxed">
+        נתקלתם במפגע בטיחותי או תקלה פיזית בשטח בית הספר? מלאו את הפרטים. הדיווח יועבר לנציג הנהגת ההורים לצורך ריכוז ומעקב מול הנהלת בית הספר ועיריית באר יעקב.
+      </p>
+    </div>
+
+    <!-- The Report Form -->
+    <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-sm border border-slate-200">
+      <form id="parentReportForm" onsubmit="sendViaWhatsApp(event)" class="space-y-4">
+        
+        <!-- Parent & Student Info -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">שם ההורה המדווח *</label>
+            <input type="text" id="parentName" required placeholder="למשל: יעל כהן"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-slate-50/50" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">כיתת הילד/ה *</label>
+            <input type="text" id="studentGrade" required placeholder="למשל: ד'2 או א'3"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-slate-50/50" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">מספר טלפון של ההורה לחזרה</label>
+          <input type="tel" id="parentPhone" placeholder="050-0000000 (רשות)"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-slate-50/50" />
+        </div>
+
+        <hr class="border-slate-100 my-2" />
+
+        <!-- Hazard Info -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">מיקום מדויק של המפגע בביה"ס *</label>
+          <input type="text" id="faultLocation" required placeholder="למשל: מדרגות אגף ב', ליד המתקנים בחצר, כיתה ג'1"
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-slate-50/50" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">סוג המפגע *</label>
+            <select id="faultCategory" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-white">
+              <option value="סכנת בטיחות לילדים">⚠️ סכנת בטיחות (בור, ברזל בולט, גדר שבורה)</option>
+              <option value="אינסטלציה ומים">🚰 אינסטלציה, הצפה או שירותים</option>
+              <option value="חשמל ותאורה">💡 חשמל, כבלים חשופים ותאורה</option>
+              <option value="מיזוג אוויר">❄️ מזגן תקול בכיתה</option>
+              <option value="ריהוט, חלונות ודלתות">🪑 שולחן/כיסא/חלון/דלת שבורים</option>
+              <option value="מתקני חצר וספורט">⚽ מתקני חצר, שערים, סלים</option>
+              <option value="היגיינה וניקיון">🧹 מפגע ניקיון חריג</option>
+              <option value="אחר">📌 אחר</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">רמת דחיפות / סיכון *</label>
+            <select id="urgencyLevel" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-white font-semibold">
+              <option value="🚨 סכנה בטיחותית מיידית לילדים" class="text-red-600 font-bold">🚨 סכנה מיידית לילדים</option>
+              <option value="⚠️ דורש טיפול מהיר (בימים הקרובים)" selected class="text-amber-600">⚠️ דורש טיפול מהיר</option>
+              <option value="ℹ️ תחזוקה שוטפת" class="text-slate-700">ℹ️ תחזוקה שוטפת</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">תיאור המפגע *</label>
+          <textarea id="faultDesc" rows="3" required placeholder="פרטו מה ראיתם, מה שבור או מה דורש טיפול..."
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-slate-50/50"></textarea>
+        </div>
+
+        <!-- Image Upload Section -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">תמונת המפגע (מומלץ מאוד)</label>
+          
+          <label for="faultImage" class="flex flex-col items-center justify-center border-2 border-dashed border-blue-300 hover:border-blue-500 bg-blue-50/40 hover:bg-blue-50 rounded-2xl p-4 cursor-pointer transition text-center group">
+            <div class="text-3xl mb-1 group-hover:scale-110 transition transform">📸</div>
+            <span class="text-xs font-bold text-blue-800">לחצו לצילום במקום או לבחירה מהגלריה</span>
+            <span class="text-[11px] text-slate-500 mt-0.5">JPG, PNG עד 10MB</span>
+            <input type="file" id="faultImage" accept="image/*" capture="environment" class="hidden" onchange="handleImageSelected(event)" />
+          </label>
+
+          <!-- Preview Container -->
+          <div id="imagePreviewContainer" class="hidden mt-3 relative bg-slate-50 p-2.5 rounded-2xl border border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-3 overflow-hidden">
+              <img id="imagePreview" src="" alt="תצוגה מקדימה" class="w-14 h-14 object-cover rounded-xl border border-slate-300 shadow-sm" />
+              <div class="text-right overflow-hidden">
+                <p id="imageFileName" class="text-xs font-bold text-slate-800 truncate max-w-[180px]">image.jpg</p>
+                <p class="text-[11px] text-emerald-600 font-semibold">✓ התמונה מוכנה לצירוף</p>
+              </div>
+            </div>
+            <button type="button" onclick="removeImage()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg text-sm font-bold" title="הסר תמונה">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- DISCLAIMER SECTION -->
+        <div class="bg-amber-50/90 border border-amber-200/80 rounded-2xl p-4 text-xs text-amber-950 space-y-2">
+          <div class="flex items-center gap-1.5 font-bold text-amber-900">
+            <span>🛡️</span>
+            <span>הבהרה חשובה ופטור מאחריות</span>
+          </div>
+          <p class="leading-relaxed text-amber-900/90">
+            הנהגת ההורים הינה גוף התנדבותי המשמש כגורם מקשר בלבד לצורך ריכוז הפניות והעברתן להנהלת בית הספר ולמחלקת החינוך והאחזקה בעיריית באר יעקב. 
+            <strong>הנהגת ההורים אינה נושאת באחריות לתחזוקת המבנה, לבטיחותו או לביצוע הטיפול בפועל.</strong>
+          </p>
+          <p class="text-[11px] text-red-700 font-semibold bg-red-50 p-2 rounded-xl border border-red-100">
+            🚨 במקרה של סכנת חיים מיידית, חוט חשמל חשוף או דליפה מסוכנת – יש לפנות מיידית למזכירות ביה"ס או לחייג למוקד 106 של עיריית באר יעקב!
+          </p>
+        </div>
+
+        <!-- Mandatory Terms Checkbox -->
+        <label class="flex items-start gap-2.5 cursor-pointer pt-1 px-1">
+          <input type="checkbox" id="disclaimerCheck" required class="mt-1 w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-slate-300 cursor-pointer" />
+          <span class="text-xs text-slate-600 leading-normal select-none">
+            קראתי ואני מאשר/ת כי הנהגת ההורים פועלת בהתנדבות כגורם מקשר בלבד, ואינה אחראית למפגע או לתיקונו. *
+          </span>
+        </label>
+
+        <!-- Submit Button -->
+        <button type="submit"
+          class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 text-base transition">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.976.533 2.026.814 3.149.814 3.182 0 5.768-2.587 5.768-5.766 0-3.18-2.586-5.656-5.768-5.656zm6.38 5.766c-.001 3.518-2.863 6.379-6.38 6.379-1.077 0-2.122-.271-3.055-.785l-3.385.888.903-3.302c-.569-.972-.871-2.083-.871-3.18 0-3.518 2.863-6.379 6.38-6.379 3.519 0 6.38 2.861 6.38 6.379zm-3.805 2.112c-.209-.105-1.236-.61-1.428-.68-.191-.07-.331-.105-.471.105-.14.21-.541.68-.663.82-.122.14-.244.157-.453.052-.209-.105-.884-.326-1.684-1.039-.623-.555-1.043-1.24-1.165-1.45-.122-.21-.013-.323.092-.428.095-.094.209-.245.314-.367.105-.122.14-.21.21-.349.07-.14.035-.262-.017-.367-.053-.105-.471-1.135-.646-1.554-.17-.409-.343-.353-.471-.36-.122-.007-.262-.009-.402-.009-.14 0-.367.052-.559.262-.192.21-.733.716-.733 1.746 0 1.03 1.047 2.025 1.192 2.218.145.193 2.061 3.147 4.993 4.413.698.301 1.243.481 1.668.616.701.223 1.339.192 1.843.117.562-.084 1.727-.706 1.972-1.387.244-.681.244-1.265.171-1.387-.073-.122-.262-.193-.471-.298z"/>
+          </svg>
+          שליחת דיווח לוואטסאפ של הנהגת ההורים
+        </button>
+
+      </form>
+    </div>
+
+    <!-- Footer Note -->
+    <p class="text-center text-xs text-slate-400 mt-6 leading-relaxed">
+      מוקד התנדבותי מטעם הנהגת ההורים בראשית באר יעקב.<br>
+      הטיפול והאחריות הפיזית חלים על עיריית באר יעקב והנהלת בית הספר בלבד.
+    </p>
+  </main>
+
+  <!-- Phone Settings Modal -->
+  <div id="phoneModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl">
+      <h3 class="text-lg font-bold text-slate-900 mb-2">הגדרת מספר וואטסאפ לקבלת דיווחים</h3>
+      <p class="text-xs text-slate-500 mb-4">
+        הזינו את מספר הוואטסאפ של נציג/ת הנהגת ההורים שאליו ישלחו הדיווחים (למשל: 0501234567):
+      </p>
+      <input type="tel" id="settingsPhoneInput" placeholder="05XXXXXXXX"
+        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm mb-4 outline-none focus:ring-2 focus:ring-blue-500" />
+      <div class="flex gap-2">
+        <button onclick="savePhoneNumber()" class="flex-1 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold">שמור מספר</button>
+        <button onclick="closePhoneModal()" class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-sm">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // מספר וואטסאפ ברירת מחדל (החליפו למספר שלכם)
+    let TARGET_PHONE = '972504466478';
+
+    const savedPhone = localStorage.getItem('bereshit_parent_rep_phone');
+    if (savedPhone) {
+      TARGET_PHONE = savedPhone;
+    }
+
+    let selectedFile = null;
+
+    function handleImageSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      selectedFile = file;
+      document.getElementById('imageFileName').textContent = file.name;
+      document.getElementById('imagePreview').src = URL.createObjectURL(file);
+      document.getElementById('imagePreviewContainer').classList.remove('hidden');
+    }
+
+    function removeImage() {
+      selectedFile = null;
+      document.getElementById('faultImage').value = '';
+      document.getElementById('imagePreview').src = '';
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+    }
+
+    async function sendViaWhatsApp(e) {
+      e.preventDefault();
+
+      // וידוא שהמשתמש סימן את ה-Disclaimer
+      const disclaimerCheck = document.getElementById('disclaimerCheck');
+      if (!disclaimerCheck.checked) {
+        alert('יש לסמן את תיבת אישור ההבהרה לפני שליחת הדיווח.');
+        return;
+      }
+
+      const name = document.getElementById('parentName').value.trim();
+      const grade = document.getElementById('studentGrade').value.trim();
+      const phone = document.getElementById('parentPhone').value.trim() || 'לא צוין';
+      const location = document.getElementById('faultLocation').value.trim();
+      const category = document.getElementById('faultCategory').value;
+      const urgency = document.getElementById('urgencyLevel').value;
+      const desc = document.getElementById('faultDesc').value.trim();
+      const hasPhotoText = selectedFile ? "📸 מצורפת תמונה של המפגע" : "ללא תמונה מצורפת";
+
+      // ניסוח ההודעה כולל הבהרה מובנית בסוף
+      const messageText = 
+`*דיווח מפגע חדש - ביה"ס בראשית באר יעקב*
+---------------------------------------
+👤 *הורה מדווח:* ${name}
+🎒 *כיתת הילד/ה:* ${grade}
+📞 *טלפון:* ${phone}
+
+📍 *מיקום המפגע:* ${location}
+🏷️ *סוג:* ${category}
+⚡ *דחיפות:* ${urgency}
+📷 *תמונה:* ${hasPhotoText}
+
+📝 *תיאור המפגע:*
+${desc}
+---------------------------------------
+⚖️ *הבהרה:* הנהגת ההורים פועלת בהתנדבות כגורם מקשר בלבד להעברת המידע להנהלת ביה"ס ולעירייה, ואינה נושאת באחריות לתחזוקה או לטיפול בפועל.`;
+
+      // שיתוף קובץ בסמארטפונים
+      if (selectedFile && navigator.canShare && navigator.canShare({ files: [selectedFile] })) {
+        try {
+          await navigator.share({
+            title: 'דיווח מפגע - בית ספר בראשית',
+            text: messageText,
+            files: [selectedFile]
+          });
+          return;
+        } catch (err) {
+          if (err.name === 'AbortError') return;
+          console.warn('Share API failed, falling back', err);
+        }
+      }
+
+      if (selectedFile) {
+        alert('שיחת הוואטסאפ תיפתח כעת עם פרטי הדיווח. אנא גררו או צרפו את התמונה לשיחה.');
+      }
+
+      const encodedMessage = encodeURIComponent(messageText);
+      const whatsappUrl = `https://wa.me/${TARGET_PHONE}?text=${encodedMessage}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    function openPhoneModal() {
+      document.getElementById('settingsPhoneInput').value = TARGET_PHONE.startsWith('972') ? '0' + TARGET_PHONE.slice(3) : TARGET_PHONE;
+      document.getElementById('phoneModal').classList.remove('hidden');
+    }
+
+    function closePhoneModal() {
+      document.getElementById('phoneModal').classList.add('hidden');
+    }
+
+    function savePhoneNumber() {
+      let raw = document.getElementById('settingsPhoneInput').value.trim().replace(/[-\s]/g, '');
+      if (!raw) return;
+
+      if (raw.startsWith('0')) {
+        raw = '972' + raw.slice(1);
+      } else if (!raw.startsWith('972')) {
+        raw = '972' + raw;
+      }
+
+      TARGET_PHONE = raw;
+      localStorage.setItem('bereshit_parent_rep_phone', raw);
+      alert('מספר הוואטסאפ עודכן בהצלחה!');
+      closePhoneModal();
+    }
+  </script>
+</body>
+</html>
+
+```
